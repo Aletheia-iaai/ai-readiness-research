@@ -28,23 +28,24 @@
     if (el) el.style.display = "none";
   }
 
-  function renderBars(containerId, order, counts, total) {
+  // getValue returns the number driving the bar; getLabel the text beside it
+  function renderBars(containerId, order, data, getValue, getLabel) {
     var container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = "";
 
     var max = 0;
     order.forEach(function (key) {
-      var n = counts[key] || 0;
+      var n = getValue(data[key]);
       if (n > max) max = n;
     });
 
     var sorted = order.slice().sort(function (a, b) {
-      return (counts[b] || 0) - (counts[a] || 0);
+      return getValue(data[b]) - getValue(data[a]);
     });
 
     sorted.forEach(function (key) {
-      var n = counts[key] || 0;
+      var n = getValue(data[key]);
       var pct = max > 0 ? Math.round((n / max) * 100) : 0;
 
       var row = document.createElement("div");
@@ -59,7 +60,7 @@
 
       var count = document.createElement("div");
       count.className = "bar-row-count";
-      count.textContent = n + (total ? " / " + total : "");
+      count.textContent = getLabel(data[key]);
 
       head.appendChild(label);
       head.appendChild(count);
@@ -102,13 +103,36 @@
       show("results-total-wrap");
 
       show("live-priorities");
-      renderBars("priorities-bars", PRIORITY_ORDER, data.priorities || {}, data.total);
+      renderBars(
+        "priorities-bars",
+        PRIORITY_ORDER,
+        data.priorities || {},
+        function (v) { return (v && v.points) || 0; },
+        function (v) {
+          if (!v || !v.picks) return "0 picks";
+          var s = v.points + (v.points === 1 ? " pt · " : " pts · ") + v.picks + (v.picks === 1 ? " pick" : " picks");
+          if (v.first) s += " · " + v.first + "× №1";
+          return s;
+        }
+      );
 
       show("live-confidence");
-      renderBars("confidence-bars", CONFIDENCE_ORDER, data.confidence || {}, data.total);
+      renderBars(
+        "confidence-bars",
+        CONFIDENCE_ORDER,
+        data.confidence || {},
+        function (v) { return v || 0; },
+        function (v) { return (v || 0) + " / " + data.total; }
+      );
 
       show("live-region");
-      renderBars("region-bars", REGION_ORDER, data.region || {}, data.total);
+      renderBars(
+        "region-bars",
+        REGION_ORDER,
+        data.region || {},
+        function (v) { return v || 0; },
+        function (v) { return (v || 0) + " / " + data.total; }
+      );
     })
     .catch(function () {
       hide("state-loading");

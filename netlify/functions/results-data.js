@@ -1,4 +1,4 @@
-// v2 — bumped so Netlify's diff check redeploys this function with current env vars
+// v3 — ranked priorities: №1 = 3 pts, №2 = 2 pts, №3 = 1 pt
 const PRIORITY_KEYS = [
   "Continuous control monitoring / testing",
   "SOX walkthroughs & evidence gathering",
@@ -25,7 +25,9 @@ exports.handler = async function () {
 
   const empty = () => ({
     total: 0,
-    priorities: Object.fromEntries(PRIORITY_KEYS.map((k) => [k, 0])),
+    priorities: Object.fromEntries(
+      PRIORITY_KEYS.map((k) => [k, { points: 0, picks: 0, first: 0 }])
+    ),
     confidence: Object.fromEntries(CONFIDENCE_KEYS.map((k) => [k, 0])),
     region: Object.fromEntries(REGION_KEYS.map((k) => [k, 0])),
   });
@@ -74,11 +76,26 @@ exports.handler = async function () {
     submissions.forEach((sub) => {
       const data = sub.data || {};
 
-      let picked = data.priorities || [];
-      if (!Array.isArray(picked)) picked = [picked];
-      picked.forEach((p) => {
+      const ranked = [
+        [data.priority_rank_1, 3, true],
+        [data.priority_rank_2, 2, false],
+        [data.priority_rank_3, 1, false],
+      ];
+      ranked.forEach(([key, pts, isFirst]) => {
+        if (key && Object.prototype.hasOwnProperty.call(result.priorities, key)) {
+          result.priorities[key].points += pts;
+          result.priorities[key].picks += 1;
+          if (isFirst) result.priorities[key].first += 1;
+        }
+      });
+
+      // Backward compatibility with early unranked submissions
+      let legacy = data.priorities || [];
+      if (!Array.isArray(legacy)) legacy = [legacy];
+      legacy.forEach((p) => {
         if (Object.prototype.hasOwnProperty.call(result.priorities, p)) {
-          result.priorities[p] += 1;
+          result.priorities[p].points += 1;
+          result.priorities[p].picks += 1;
         }
       });
 

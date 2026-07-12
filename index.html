@@ -27,7 +27,7 @@
       </div>
       <div class="cover-field">
         <div class="small-caps-label">Status</div>
-        <div class="value">Open &mdash; Collecting Input</div>
+        <div class="value">Open &mdash; Closes 15 Aug 2026</div>
       </div>
       <div class="cover-field">
         <div class="small-caps-label">Prepared By</div>
@@ -186,7 +186,7 @@
     </div>
     <div class="ask-intro">
       <p class="body-text reveal">This is the part the survey data can&rsquo;t give me. If you lead an internal audit, controllership, risk, or controls function, I&rsquo;d like ten minutes of your actual priorities &mdash; not for a product, not for a pitch, just for a clearer picture of what would genuinely help.</p>
-      <p class="body-text reveal">Responses are used solely to inform this independent research. Individual answers won&rsquo;t be attributed without your permission; findings will be shared back in aggregate.</p>
+      <p class="body-text reveal">Responses are used solely to inform this independent research, which runs until <strong>15 August 2026</strong>. Every field is optional &mdash; respond anonymously if you prefer. Individual answers won&rsquo;t be attributed without your permission. Aggregate tallies update on the <a href="/results/">live results page</a> as responses arrive, and the final findings will be shared back after the survey closes.</p>
     </div>
 
     <form class="enquiry" id="enquiry-form" name="ai-enquiry" method="POST" action="/results/" data-netlify="true" netlify-honeypot="bot-field">
@@ -222,17 +222,21 @@
       </div>
 
       <div class="field">
-        <label class="field-label">If an agent could reliably take one of these off your plate, which would move the needle most?</label>
+        <label class="field-label">If an agent could reliably take three of these off your plate, which three would move the needle most?</label>
+        <span class="field-hint">Select up to three, in order of priority &mdash; your first click becomes &#8470;1.</span>
         <div class="check-grid" id="f-priorities">
-          <div class="check-item"><input type="checkbox" id="c1" name="priorities" value="Continuous control monitoring / testing"><label for="c1">Continuous control monitoring / testing</label></div>
-          <div class="check-item"><input type="checkbox" id="c2" name="priorities" value="SOX walkthroughs & evidence gathering"><label for="c2">SOX walkthroughs &amp; evidence gathering</label></div>
-          <div class="check-item"><input type="checkbox" id="c3" name="priorities" value="Investigation & fraud triage"><label for="c3">Investigation &amp; fraud triage</label></div>
-          <div class="check-item"><input type="checkbox" id="c4" name="priorities" value="Thematic / board & audit committee reporting"><label for="c4">Thematic / board &amp; committee reporting</label></div>
-          <div class="check-item"><input type="checkbox" id="c5" name="priorities" value="Data quality & source-of-truth reconciliation"><label for="c5">Data quality &amp; source-of-truth reconciliation</label></div>
-          <div class="check-item"><input type="checkbox" id="c6" name="priorities" value="Risk assessment & audit planning"><label for="c6">Risk assessment &amp; audit planning</label></div>
-          <div class="check-item"><input type="checkbox" id="c7" name="priorities" value="Upskilling the team"><label for="c7">Upskilling the team</label></div>
-          <div class="check-item"><input type="checkbox" id="c8" name="priorities" value="Other"><label for="c8">Other (specify below)</label></div>
+          <div class="check-item"><input type="checkbox" id="c1" value="Continuous control monitoring / testing"><label for="c1">Continuous control monitoring / testing</label></div>
+          <div class="check-item"><input type="checkbox" id="c2" value="SOX walkthroughs & evidence gathering"><label for="c2">SOX walkthroughs &amp; evidence gathering</label></div>
+          <div class="check-item"><input type="checkbox" id="c3" value="Investigation & fraud triage"><label for="c3">Investigation &amp; fraud triage</label></div>
+          <div class="check-item"><input type="checkbox" id="c4" value="Thematic / board & audit committee reporting"><label for="c4">Thematic / board &amp; committee reporting</label></div>
+          <div class="check-item"><input type="checkbox" id="c5" value="Data quality & source-of-truth reconciliation"><label for="c5">Data quality &amp; source-of-truth reconciliation</label></div>
+          <div class="check-item"><input type="checkbox" id="c6" value="Risk assessment & audit planning"><label for="c6">Risk assessment &amp; audit planning</label></div>
+          <div class="check-item"><input type="checkbox" id="c7" value="Upskilling the team"><label for="c7">Upskilling the team</label></div>
+          <div class="check-item"><input type="checkbox" id="c8" value="Other"><label for="c8">Other (specify below)</label></div>
         </div>
+        <input type="hidden" id="rank1" name="priority_rank_1" />
+        <input type="hidden" id="rank2" name="priority_rank_2" />
+        <input type="hidden" id="rank3" name="priority_rank_3" />
       </div>
 
       <div class="field">
@@ -257,8 +261,9 @@
       </div>
 
       <div class="field">
-        <label class="field-label" for="f-email">Email <span style="text-transform:none; letter-spacing:0;">(optional &mdash; if you&rsquo;d like the findings shared back)</span></label>
+        <label class="field-label" for="f-email">Email <span style="text-transform:none; letter-spacing:0;">(optional &mdash; to receive the final findings report after the survey closes on 15 August)</span></label>
         <input type="email" id="f-email" name="email" autocomplete="email" />
+        <span class="field-hint">Used once, to send you the report &mdash; never shared, never added to a mailing list. Prefer not to leave one? The findings will also be posted on <a href="https://www.linkedin.com/in/evelyn-khoo-b8871530/" target="_blank" rel="noopener">LinkedIn</a> and the <a href="/results/">live results page</a>.</span>
       </div>
 
       <div class="submit-row">
