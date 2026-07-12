@@ -42,5 +42,16 @@
         hidden.forEach(function (h, i) { h.value = order[i] ? order[i].value : ''; });
       });
     });
+
+    // "Other" reveals its please-specify box
+    var otherBox = document.getElementById('c8');
+    var otherWrap = document.getElementById('other-specify');
+    var otherInput = document.getElementById('f-other');
+    if (otherBox && otherWrap) {
+      otherBox.addEventListener('change', function () {
+        otherWrap.style.display = otherBox.checked ? '' : 'none';
+        if (!otherBox.checked && otherInput) otherInput.value = '';
+      });
+    }
   }
 })();

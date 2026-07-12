@@ -1,4 +1,5 @@
-// v3 — ranked priorities: №1 = 3 pts, №2 = 2 pts, №3 = 1 pt
+// v4 — NETLIFY_-prefixed custom vars collide with Netlify's reserved namespace
+// and never reach function runtime; renamed token var, site id uses built-in SITE_ID
 const PRIORITY_KEYS = [
   "Continuous control monitoring / testing",
   "SOX walkthroughs & evidence gathering",
@@ -20,8 +21,11 @@ const CONFIDENCE_KEYS = [
 const REGION_KEYS = ["APAC", "EMEA", "Americas", "Global", "Other"];
 
 exports.handler = async function () {
-  const token = process.env.NETLIFY_ACCESS_TOKEN;
-  const siteId = process.env.NETLIFY_SITE_ID;
+  const token = process.env.RESULTS_API_TOKEN || process.env.NETLIFY_ACCESS_TOKEN;
+  const siteId =
+    process.env.RESULTS_SITE_ID ||
+    process.env.NETLIFY_SITE_ID ||
+    process.env.SITE_ID;
 
   const empty = () => ({
     total: 0,
@@ -37,7 +41,10 @@ exports.handler = async function () {
       statusCode: 500,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        error: "Missing NETLIFY_ACCESS_TOKEN or NETLIFY_SITE_ID environment variable.",
+        error:
+          "Missing config: " +
+          (token ? "" : "RESULTS_API_TOKEN ") +
+          (siteId ? "" : "SITE_ID"),
       }),
     };
   }
